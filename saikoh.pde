@@ -3,6 +3,47 @@ import wsp5.*;
 
 WsClient client;
 IntList skcounts;
+ArrayList<SkImage> images = new ArrayList<SkImage>();
+
+class SkImage{
+  int size;
+  int opacity;
+  PImage img;
+
+  SkImage(int i){
+    switch(i){
+      case(0):
+        img = loadImage("img/saikoh.png");
+        break;
+      case(1):
+        img = loadImage("img/emoi.png");
+        break;
+      case(2):
+        img = loadImage("img/itf.png");
+        break;
+      case(3):
+        img = loadImage("img/wtc.png");
+        break;
+    }
+    size = 100;
+    opacity = 150;
+  }
+
+  void display(){
+    tint(255, opacity);
+    image(img, width/2, height/2, size, size);
+    size += 30;
+    opacity -= 10;
+  }
+
+  boolean is_finished(){
+    if(opacity < 0){
+      return true;
+    }else{
+      return false;
+    }
+  }
+}
 
 void setup(){
   // saikoh.tkとのWebSocket通信の確立
@@ -36,26 +77,31 @@ void setup(){
   // キャンバスの初期化など
   background(255);
   size(400, 400);
+  imageMode(CENTER);
 }
 
 void onSaikoh(){
   // 最高
   println("saikoh");
+  images.add(new SkImage(0));
 }
 
 void onEmoi(){
   // エモい
   println("emoi");
+  images.add(new SkImage(1));
 }
 
 void onITF(){
   // IMAGINE THE FUTURE.
   println("itf");
+  images.add(new SkImage(2));
 }
 
 void onWTC(){
   // We Are the Champions
   println("wtc");
+  images.add(new SkImage(3));
 }
 
 void invokeSkEvents(int id){
@@ -97,9 +143,18 @@ void onWsClose(){
 }
 
 void draw(){
+  clear();
+  background(255);
 
+  for(int i=0; i<images.size(); i++){
+    SkImage zoom = images.get(i);
+    zoom.display();
+    if(zoom.is_finished()){
+      images.remove(i);
+    }
+  }
 }
 
 void mouseClicked(){
-  
+  // images.add(new SkImage(0));
 }
