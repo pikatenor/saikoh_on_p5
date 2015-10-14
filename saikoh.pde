@@ -61,6 +61,7 @@ void setup(){
   click = new GetRequest("http://saikoh.tk/click/saikou");
   pin2ButtonPressed = false;
 
+  // 音声の読み込み
   minim = new Minim(this);
   saikoh = minim.loadFile("mp3/saikoh.mp3");
   emoi = minim.loadFile("mp3/emoi.mp3");
@@ -81,6 +82,7 @@ void onEmoi(){
   println("emoi");
   images.add(new SkImage(1));
   emoi.play();
+  saikoh.rewind();
 }
 
 void onITF(){
@@ -88,6 +90,7 @@ void onITF(){
   println("itf");
   images.add(new SkImage(2));
   itf.play();
+  saikoh.rewind();
 }
 
 void onWTC(){
@@ -95,6 +98,7 @@ void onWTC(){
   println("wtc");
   images.add(new SkImage(3));
   wtc.play();
+  saikoh.rewind();
 }
 
 void invokeSkEvents(int id){
@@ -114,6 +118,7 @@ void invokeSkEvents(int id){
         break;
     }
   }else{
+    // ここに書くのは汚い
     images.remove(0);
     println("limit exceeded. kill last 1 image.");
   }
@@ -180,6 +185,7 @@ void draw(){
 }
 
 void stop(){
+  // 何やら音声のクリーンナップをしないといけないお作法があるらしい
   saikoh.close();
   emoi.close();
   itf.close();
