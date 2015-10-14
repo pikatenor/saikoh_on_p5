@@ -2,7 +2,7 @@ import http.requests.*;
 import wsp5.*;
 import processing.serial.*;
 import cc.arduino.*;
-import processing.sound.*;
+import ddf.minim.*;
 
 Arduino arduino;
 WsClient client;
@@ -10,6 +10,11 @@ IntList skcounts;
 ArrayList<SkImage> images = new ArrayList<SkImage>();
 GetRequest click;
 boolean pin2ButtonPressed;
+Minim minim;
+AudioPlayer saikoh;
+AudioPlayer emoi;
+AudioPlayer itf;
+AudioPlayer wtc;
 
 void setup(){
   // saikoh.tkとのWebSocket通信の確立
@@ -55,30 +60,41 @@ void setup(){
   // 最高を送信するためのオブジェクト
   click = new GetRequest("http://saikoh.tk/click/saikou");
   pin2ButtonPressed = false;
+
+  minim = new Minim(this);
+  saikoh = minim.loadFile("mp3/saikoh.mp3");
+  emoi = minim.loadFile("mp3/emoi.mp3");
+  itf = minim.loadFile("mp3/itf.mp3");
+  wtc = minim.loadFile("mp3/wtc.mp3");
 }
 
 void onSaikoh(){
   // 最高
   println("saikoh");
   images.add(new SkImage(0));
+  saikoh.play();
+  saikoh.rewind();
 }
 
 void onEmoi(){
   // エモい
   println("emoi");
   images.add(new SkImage(1));
+  emoi.play();
 }
 
 void onITF(){
   // IMAGINE THE FUTURE.
   println("itf");
   images.add(new SkImage(2));
+  itf.play();
 }
 
 void onWTC(){
   // We Are the Champions
   println("wtc");
   images.add(new SkImage(3));
+  wtc.play();
 }
 
 void invokeSkEvents(int id){
@@ -153,7 +169,7 @@ void draw(){
   // pin2に+5Vが入ると
   if(arduino.digitalRead(2) == Arduino.HIGH){
     pin2ButtonPressed = true;
-    println("pin2+")
+    println("pin2+");
   }
   if(arduino.digitalRead(2) == Arduino.LOW){
     if(pin2ButtonPressed){
@@ -163,11 +179,20 @@ void draw(){
   }
 }
 
+void stop(){
+  saikoh.close();
+  emoi.close();
+  itf.close();
+  wtc.close();
+  minim.stop();
+  super.stop();
+}
+
 void mouseClicked(){
   // images.add(new SkImage(0));
 }
 
 void clickSaikoh(){
   click.send();
-  println("SAIKOH!!!")
+  println("SAIKOH!!!");
 }
