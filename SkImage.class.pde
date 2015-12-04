@@ -49,3 +49,14 @@ class SkImage{
     }
   }
 }
+
+void addImage(int id){
+  int limit = 20;
+  if(images.size() < limit){
+    images.add(new SkImage(id));
+  }else{
+    images.remove(0);
+    println("limit exceeded. killing last 1 image.");
+  }
+  println("remaining images: " + images.size());
+}

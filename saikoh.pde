@@ -43,25 +43,25 @@ void setup(){
 void onSaikoh(){
   // 最高
   println("saikoh");
-  images.add(new SkImage(0));
+  addImage(0);
 }
 
 void onEmoi(){
   // エモい
   println("emoi");
-  images.add(new SkImage(1));
+  addImage(1);
 }
 
 void onITF(){
   // IMAGINE THE FUTURE.
   println("itf");
-  images.add(new SkImage(2));
+  addImage(2);
 }
 
 void onWTC(){
   // We Are the Champions
   println("wtc");
-  images.add(new SkImage(3));
+  addImage(3);
 }
 
 void invokeSkEvents(int id){
