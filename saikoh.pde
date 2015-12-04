@@ -77,7 +77,7 @@ void setup(){
   }
   String response = request.getContent();
   JSONArray jsonarray = JSONArray.parse(response);
-  for(int i=0;i<4;i++){
+  for(int i=0; i<jsonarray.size(); i++){
     JSONObject jsonobject = jsonarray.getJSONObject(i);
     int count = jsonobject.getInt("count");
     skcounts.append(count);
@@ -137,7 +137,7 @@ void onWsOpen(){
 
 void onWsMessage( String message ){
   JSONArray jsonarray = JSONArray.parse(message);
-  for(int i=0;i<4;i++){
+  for(int i=0; i<jsonarray.size(); i++){
     JSONObject jsonobject = jsonarray.getJSONObject(i);
     int count = jsonobject.getInt("count");
     int current = skcounts.get(i);
