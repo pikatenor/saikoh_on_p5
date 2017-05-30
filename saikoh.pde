@@ -3,7 +3,7 @@ import wsp5.*;
 
 WsClient client;
 
-String wsurl = "ws://localhost:8124/api/feed";
+String wsurl = "ws://saikoh.tk/api/websocket";
 // String wsurl = "ws://saikoh.osyoyu.com/api/feed";
 PImage saikoh_img;
 
@@ -40,40 +40,11 @@ void onWsOpen(){
 }
 
 void onWsMessage(String wsmessage){
-  // JSONArray jsonarray = JSONArray.parse(message);
-  // for(int i=0; i<jsonarray.size(); i++){
-  //   JSONObject jsonobject = jsonarray.getJSONObject(i);
-  //   int count = jsonobject.getInt("count");
-  //   int current = skcounts.get(i);
-  //   if (current < count){
-  //     // update counts
-  //     skcounts.set(i, count);
-  //     // invoke onNanika
-  //     invokeSkEvents(i);
-  //   }
-  // }
   JSONObject message = JSONObject.parse(wsmessage);
   String type = message.getString("type");
 
-  if(type.equals("counters")){
-    JSONArray counters = message.getJSONArray("counters");
-    for(int i=0; i<counters.size(); i++){
-      JSONObject counter = counters.getJSONObject(i);
-      if(counter.getString("counter_name").equals("saikoh")){
-        skCount = counter.getInt("counter_value");
-        println(skCount);
-      }
-    }
-  }else if(type.equals("changed")){
-    String name = message.getString("counter_name");
-    if(name.equals("saikoh")){
-      int updatedSkCount = message.getInt("counter_value");
-      println(updatedSkCount);
-      if(skCount < updatedSkCount){
-        onSaikoh();
-      }
-      skCount = updatedSkCount;
-    }
+if(type.equals("update")){
+  onSaikoh();
   }else{
     println(message);
   }
