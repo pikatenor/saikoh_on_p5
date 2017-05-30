@@ -3,7 +3,8 @@ import wsp5.*;
 
 WsClient client;
 
-String wsurl = "ws://saikoh.osyoyu.com/";
+String wsurl = "ws://localhost:8124/api/feed";
+// String wsurl = "ws://saikoh.osyoyu.com/api/feed";
 PImage saikoh_img;
 
 int skCount;
@@ -19,8 +20,9 @@ void setup(){
   }
 
   // キャンバスの初期化など
-  background(255);
-  size(400, 400);
+  background(0);
+  // fullScreen(P2D, 0);
+  size(800, 800, P2D);
   imageMode(CENTER);
   frameRate(60);
 
@@ -34,6 +36,7 @@ void onSaikoh(){
 }
 
 void onWsOpen(){
+  println("WebSocket connection opened.");
 }
 
 void onWsMessage(String wsmessage){
@@ -77,11 +80,19 @@ void onWsMessage(String wsmessage){
 }
 
 void onWsClose(){
+  println("WebSocket connection closed!");
+  try {
+    println("Trying to reconnect...");
+    client = new WsClient(this, wsurl);
+    client.connect();
+  }catch(Exception e){
+    println("!!! Reconnection failed !!!");
+    println(e);
+  }
 }
 
 void draw(){
-  clear();
-  background(255);
+  background(0);
 
   for(int i=0; i<images.size(); i++){
     SkImage zoom = images.get(i);

@@ -1,7 +1,8 @@
 ArrayList<SkImage> images = new ArrayList<SkImage>();
 
 class SkImage{
-  int size;
+  int size_x;
+  int size_y;
   int opacity;
   float zoomSpeed;
   float fadeSpeed;
@@ -9,9 +10,10 @@ class SkImage{
 
   SkImage(){
     img = saikoh_img;
-    size = 100;
+    size_x = 300;
+    size_y = 250;
     opacity = 200;
-    zoomSpeed = 30;
+    zoomSpeed = 100;
     fadeSpeed = 10;
   }
 
@@ -20,13 +22,14 @@ class SkImage{
       opacity = 0;
     }
     tint(255, opacity);
-    image(img, width/2, height/2, size, size);
-    size += zoomSpeed;
+    image(img, width/2, height/2, size_x, size_y);
+    size_x += zoomSpeed;
+    size_y += zoomSpeed;
     opacity -= fadeSpeed;
   }
 
   boolean is_finished(){
-    if(opacity < 0){
+    if(opacity <= 0){
       return true;
     }else{
       return false;
